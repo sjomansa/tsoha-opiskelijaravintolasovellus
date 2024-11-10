@@ -20,6 +20,21 @@ def index():
 def register():
     return render_template("register.html")
 
+@app.route("/login", methods=["POST"])
+def login():
+    username = request.form["username"]
+    password = request.form["password"]
+    sql = text("SELECT password FROM users WHERE username=:username")
+    result = db.session.execute(sql, {"username": username})
+    user = result.fetchone()
+
+    if user:
+        hash_value = user.password
+        if check_password_hash(hash_value, password):
+            return redirect("/")
+        
+    return redirect("/register")
+
 @app.route("/register_user", methods=["POST"])
 def register_user():
     password = request.form["password1"]
@@ -32,6 +47,7 @@ def register_user():
     if status == "ravintoloitsija":
         admin = True
 
+    #Look up if the user is already in the database
     sql = text("SELECT id FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username": username})
     user = result.fetchone()
@@ -45,4 +61,4 @@ def register_user():
       
     return redirect("/register")
 
-        
+
