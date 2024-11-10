@@ -1,8 +1,64 @@
 <!DOCTYPE html>
-<body>
 
-    <p>
-        Heeei! Onnistuit!
-    </p>
+<head>
+    <meta charset="UTF-8">
+    <title>
+      Register
+    </title>
+
+    <style>
+      
+      .signup.form-container {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      .form-group {
+        margin-bottom: 1em;
+      }
+
+      label{
+        display: inline-block;
+        width: 150px;
+        padding-right: 10px;
+
+      }
+
+      input[type="text"], input[type="password"], input[type="submit"] {
+        width: 250px;
+        box-sizing: border-box;
+      }
+
+      input[type="submit"] {
+        width: auto;
+      }
+
+    </style>
+</head>
+
+<body>
+    <form action="/" method="post"></form>
+    <p> Tee uusi käyttäjä</p> <br>
+    
+    <div class="signup.form-container">
+        <div class="form-group">
+            <label for ="username" class="signup-row" >Käyttäjätunnus:</label>
+            <input type="text" name="username" size="20" class="signup-row">
+        </div>
+        <div class="form-group">
+            <label for ="password1" class="signup-row" >Salasana:</label>
+            <input type="password" name="password1" size="20" class="signup-row">
+        </div>
+        <div class="form-group">
+            <label for ="password2" class="signup-row" >Syötä salasana uudelleen:</label>
+            <input type="password" name="password2" size="20" class="signup-row">
+        </div>
+        <div class="form-group">
+            <input type="radio" name="admin" vale="opiskelija" checked> Opiskelija
+            <input type="radio" name="admin" vale="ravintoloitsija"> Ravintoloitsija
+        </div>
+        <div class="form-group">
+        <input type="submit" value="register">
+    </div>
 
 </body>
