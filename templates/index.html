@@ -1,0 +1,42 @@
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8">
+    <title>
+      Opiskelijaravintolat
+    </title>
+
+    <style>
+      
+      .form-container {
+        display: grid;
+        grid-template-columns: max-content auto;
+        gap: 10px 20px;
+        align-items: center;
+      }
+
+      .form-row {
+        padding: 5px 0;
+      }
+
+    </style>
+
+  </head>
+  <body>
+    <h1>Opiskelijaravintolat</h1>
+    <p>
+        <form action="" method="post">
+          <div class="form-container">
+            <label for ="username" class="form-row" >Käyttäjätunnus:</label>
+            <input type="text" name="username" size="20" class="form-row">
+
+            <label for ="password" class="form-row" >Salasana:</label>
+            <input type="text" name="password" size="20" class="form-row">
+
+            
+            <input type="submit" value="Kirjaudu sisään">
+            <a href="/templates/register.html"> Etkö ole rekisteröitynyt? </a>
+        </div>
+        </form>
+    </p>
+  </body>
+</html>
