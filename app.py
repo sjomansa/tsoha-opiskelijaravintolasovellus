@@ -12,29 +12,43 @@ app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 app.secret_key = getenv("SECRET_KEY")
 db = SQLAlchemy(app)
 
+#Display index view
 @app.route("/")
 def index():
     return render_template("index.html")
 
+#Display view for registering a new user
 @app.route("/register")
 def register():
     return render_template("register.html")
 
+
+#Check if login is valid and set session-objects information
 @app.route("/login", methods=["POST"])
 def login():
     username = request.form["username"]
     password = request.form["password"]
-    sql = text("SELECT password FROM users WHERE username=:username")
+    sql = text("SELECT password, admin FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username": username})
     user = result.fetchone()
 
     if user:
         hash_value = user.password
         if check_password_hash(hash_value, password):
-            return redirect("/")
+            session["user"] = username
+            session["admin"] = user.admin
+            return redirect("/restaurants")
         
     return redirect("/register")
 
+
+#Main restaurant view of opiskelijaravintolat, where you can see the list of all restaurants
+@app.route("/restaurants")
+def restaurants_view():
+    return render_template("restaurants.html")
+
+
+#Function for registering a new user from register.html
 @app.route("/register_user", methods=["POST"])
 def register_user():
     password = request.form["password1"]
