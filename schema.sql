@@ -1,1 +1,2 @@
 CREATE TABLE users (id SERIAL PRIMARY KEY, username TEXT UNIQUE, password TEXT, admin BOOLEAN)
+CREATE TABLE restaurants (id SERIAL PRIMARY KEY, owner_id INTEGER REFERENCES users, name TEXT UNIQUE, adress TEXT, city TEXT)
