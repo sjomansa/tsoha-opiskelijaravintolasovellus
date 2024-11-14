@@ -1,0 +1,43 @@
+<head>
+    <style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    th {
+        text-align: left;
+    }
+    </style>
+</head>
+
+<body>
+
+    <table style="width:100%">
+        
+        <tr>
+            <th>Ravintola</th>
+            <th>Ravintoloitsija</th>
+            <th>Tähdet</th>
+            <th>Odotusaika</th>
+            <th>Kaupunki</th>
+        </tr>
+        
+        {% for restaurant in restaurants %}
+
+        <tr> 
+          <td><a href="/{{ restaurant.name }}">{{restaurant.name}}</a></td>
+          <td>{{restaurant.owner}}</td>
+          <td>{{restaurant.stars}}</td>
+          <td>{{restaurant.wait_time}}</td>
+          <td>{{restaurant.city}}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+
+
+</body>

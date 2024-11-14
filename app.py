@@ -45,7 +45,16 @@ def login():
 #Main restaurant view of opiskelijaravintolat, where you can see the list of all restaurants
 @app.route("/restaurants")
 def restaurants_view():
-    return render_template("restaurants.html")
+
+    sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 1),1) AS wait_time,
+    R.city AS city FROM users U JOIN restaurants R ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = U.id LEFT JOIN r_quetimes ON r_quetimes.r_id = U.id
+    GROUP BY R.name, U.username, R.city;""")
+
+    result = db.session.execute(sql)
+
+    restaurants_data = result.fetchall()
+
+    return render_template("restaurants.html", restaurants=restaurants_data)
 
 
 #Function for registering a new user from register.html
