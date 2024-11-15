@@ -12,6 +12,22 @@ app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 app.secret_key = getenv("SECRET_KEY")
 db = SQLAlchemy(app)
 
+#Get current session user_id
+def get_username():
+    return session["user"] if session["user"] else 0
+
+#Get messages for a given restaurant
+def get_messages(restaurant_id):
+    print("Getting messages")
+    sql = text("""
+            SELECT U.username as name, M.message AS message, M.time AS time FROM messages M JOIN users U ON M.u_id = U.id 
+            WHERE M.r_id =:restaurant_id
+            """)
+    result = db.session.execute(sql, {"restaurant_id":restaurant_id})
+    messages = result.fetchall()
+    return messages
+
+
 #Display index view
 @app.route("/")
 def index():
@@ -28,7 +44,7 @@ def register():
 def login():
     username = request.form["username"]
     password = request.form["password"]
-    sql = text("SELECT password, admin FROM users WHERE username=:username")
+    sql = text("SELECT password, admin, id FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username": username})
     user = result.fetchone()
 
@@ -36,6 +52,7 @@ def login():
         hash_value = user.password
         if check_password_hash(hash_value, password):
             session["user"] = username
+            session["user_id"] = user.id
             session["admin"] = user.admin
             return redirect("/restaurants")
         
@@ -55,6 +72,54 @@ def restaurants_view():
     restaurants_data = result.fetchall()
 
     return render_template("restaurants.html", restaurants=restaurants_data)
+
+
+@app.route("/restaurants/<name>")
+def restaurant_info(name):
+
+    sql = text("""
+            SELECT R.id AS id, R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_quetimes.que_time), 1),1) AS wait_time, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS rating,
+            R.city AS city, R.address AS address FROM restaurants R JOIN users U ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = R.id LEFT JOIN r_quetimes ON r_quetimes.r_id = R.id
+            WHERE R.name =:name GROUP BY R.id, R.name, U.username, R.city, R.address;
+            """)
+    result = db.session.execute(sql, {"name":name})
+    restaurant = result.fetchone()
+
+    sql = text("""
+            SELECT r_i.infotext AS infotext, r_i.open_times AS open_times FROM restaurants LEFT JOIN r_info r_i ON r_i.r_id = restaurants.id 
+            WHERE restaurants.name =:name;
+            """)
+    result = db.session.execute(sql, {"name":name})
+    info = result.fetchone()
+
+    sql = text("""
+        SELECT M.food AS food, M.price AS price FROM restaurants R LEFT JOIN r_menus AS M ON R.id = M.r_id 
+        WHERE R.name =:name;
+        """)
+    result = db.session.execute(sql, {"name":name})
+    menu = result.fetchall()
+
+    messages = get_messages(restaurant.id)
+
+    return render_template("restaurantlayout.html", restaurant=restaurant, info=info, menu=menu, messages=messages)
+
+
+#Function for sending a message to restaurants message board
+@app.route("/send_message", methods = ["POST"])
+def send_message():
+    user_id = session["user_id"]
+    restaurant_id = request.form["restaurant_id"]
+    restaurant_name = request.form["restaurant_name"]
+    message = request.form["content"]
+    
+    #Check if message is too long
+    if len(message) > 500:
+        return #Add error message here
+    sql = text("INSERT INTO messages (r_id, u_id, message, time) VALUES (:r_id, :u_id, :message, NOW())")
+    db.session.execute(sql, {"r_id":restaurant_id, "u_id":user_id, "message":message})
+    db.session.commit()
+
+    return redirect(f"/restaurants/{restaurant_name}")
 
 
 #Function for registering a new user from register.html
