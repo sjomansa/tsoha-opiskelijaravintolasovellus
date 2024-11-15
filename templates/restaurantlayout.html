@@ -1,0 +1,81 @@
+<head>
+
+    <title>Ravintola {{restaurant.name}}</title>
+
+    <style>
+
+        td {
+            padding-right: 15px;
+            text-align: left;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+    <h1>{{ restaurant.name }}</h1>
+    <br>
+    <table>
+        <td><h3>{{ restaurant.rating }}</h3></td>
+        <td><h3>{{ restaurant.wait_time }} min</h3></td>
+        <td><h3>{{ restaurant.owner }}</h3></td>
+        <td><h3>{{ restaurant.address }}</h3></td>
+    </table>
+    
+
+    <hr>
+    <br>
+    <h2>Info:</h2>
+    <div class="info">
+        <div class="infotext">
+            <p>{{ info.infotext }}</p>
+        </div>
+        <div class="open_times">
+            <p>Aukioloajat: {{ info.open_times }}</p>
+        </div>
+    </div>
+
+    <br>
+    <h2>Ruokalista</h2>
+    <ul class="menu">
+
+        {% for fooditem in menu %}
+        <div class="menuitem">
+            <li>{{ fooditem.food }}</li>          
+        </div>
+        
+        <div class="menuitem">
+            <li>{{ fooditem.price }}€</li>
+        </div>
+        <br>
+        {% endfor %}
+    </ul>
+
+    <br> <br>
+
+    <form action ="/send_message" method="POST"> 
+        <label for="message">Uusi kommentti</label><br>
+        <textarea id="message" name="content" rows="4" cols="40" required></textarea>
+
+        <input type="hidden" name="restaurant_id" value={{ restaurant.id }}>
+        <input type="hidden" name="restaurant_name" value={{ restaurant.name }}>
+
+        <button type="submit">Lähetä</button>
+    </form>
+
+    <div class="Messages">
+
+        {% for message in messages %}
+        
+        <p>{{message.message}}</p>
+        <p>{{message.name}}</p>
+        <p>{{message.time.strftime("%H:%M %d-%m-%y")}}</p>
+        <hr>
+
+        {% endfor %}
+
+    </div>
+
+</body>
