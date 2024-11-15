@@ -18,10 +18,9 @@ def get_username():
 
 #Get messages for a given restaurant
 def get_messages(restaurant_id):
-    print("Getting messages")
     sql = text("""
             SELECT U.username as name, M.message AS message, M.time AS time FROM messages M JOIN users U ON M.u_id = U.id 
-            WHERE M.r_id =:restaurant_id
+            WHERE M.r_id =:restaurant_id ORDER BY M.time DESC;
             """)
     result = db.session.execute(sql, {"restaurant_id":restaurant_id})
     messages = result.fetchall()
@@ -63,8 +62,8 @@ def login():
 @app.route("/restaurants")
 def restaurants_view():
 
-    sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 1),1) AS wait_time,
-    R.city AS city FROM users U JOIN restaurants R ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = U.id LEFT JOIN r_quetimes ON r_quetimes.r_id = U.id
+    sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 0),1) AS wait_time,
+    R.city AS city FROM users U JOIN restaurants R ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = R.id LEFT JOIN r_quetimes ON r_quetimes.r_id = R.id
     GROUP BY R.name, U.username, R.city;""")
 
     result = db.session.execute(sql)
