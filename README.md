@@ -36,12 +36,19 @@ $ source venv/bin/activate
 $ pip install -r ./requirements.txt
 
 IMPORTANT! Then add the SQL schemas AND the testdata. The testdata is dummydata that is located in testdata.sql.
+
 This will need to be added since there is currently no way to add restaurants / edit their menus among some other things.
+
 Also, it will showcase the app functionality better.
+
 So do the following: 
+
 First:
+
 $ psql < schema.sql
+
 Then:
+
 $ psql < testdata.sql
 
 Then you can run
