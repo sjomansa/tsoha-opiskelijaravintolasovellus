@@ -26,13 +26,16 @@ Clone this repository into you device and change the current directory to its ro
   
 Create a .env file inside the directory and set up the following:
 
-DATABASE_URL=<the local address of your psql database>
-SECRET_KEY=<your own secret key here>
+DATABASE_URL= the local address of your psql database
+
+SECRET_KEY= your own secret key here 
 
 Next activate the virtual environment and install dependencies listed on requirements.txt:
 
 $ python3 -m venv venv
+
 $ source venv/bin/activate
+
 $ pip install -r ./requirements.txt
 
 IMPORTANT! Then add the SQL schemas AND the testdata. The testdata is dummydata that is located in testdata.sql.

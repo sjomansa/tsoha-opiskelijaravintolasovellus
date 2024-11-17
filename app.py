@@ -158,6 +158,7 @@ def register_user():
             hash_value = generate_password_hash(password)
             db.session.execute(sql, {"username":username, "password":hash_value, "admin":admin})
             db.session.commit()
+            print(f"Sucess for {username} with password {hash_value}, status {admin}")
             return redirect("/")
       
     return redirect("/register")
