@@ -152,7 +152,7 @@ def register_user():
     sql = text("SELECT id FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username": username})
     user = result.fetchone()
-    if password == request.form["password2"] and len(password) > 4:
+    if password == request.form["password2"] and len(password) > 0:
         if not user:
             sql = text("INSERT INTO users (username, password, admin) VALUES (:username, :password, :admin)")
             hash_value = generate_password_hash(password)
