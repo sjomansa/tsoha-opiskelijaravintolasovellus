@@ -10,6 +10,45 @@
         }
 
 
+        .message_instance {
+            width: 500px;
+            border-style: solid;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding-left: 10;
+        }
+
+        #message_box {
+            width: 500px;
+        }
+
+        .comment_field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #comment_send_button {
+            width: 150;
+            height: 50;
+            border-radius: 12px;
+            color: white;
+            background-color: rgb(67, 140, 140);
+            border-style: none;
+        }
+
+        #message_box_label {
+            display: flex;
+            width: 150;
+            height: 50;
+            background-color: rgb(67, 140, 140);
+            border-radius: 4px;
+            color: white;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
     </style>
 
 </head>
@@ -55,27 +94,33 @@
 
     <br> <br>
 
-    <form action ="/send_message" method="POST"> 
-        <label for="message">Uusi kommentti</label><br>
-        <textarea id="message" name="content" rows="4" cols="40" required></textarea>
+    <div class="comment_functionality_view">
 
-        <input type="hidden" name="restaurant_id" value={{ restaurant.id }}>
-        <input type="hidden" name="restaurant_name" value={{ restaurant.name }}>
+        <form class="comment_field" action ="/send_message" method="POST"> 
+            <label id="message_box_label" for="message_box">Uusi kommentti</label><br>
+            <textarea id="message_box" name="content" rows="4" cols="40" required></textarea>
 
-        <button type="submit">Lähetä</button>
-    </form>
+            <input type="hidden" name="restaurant_id" value={{ restaurant.id }}>
+            <input type="hidden" name="restaurant_name" value={{ restaurant.name }}>
 
-    <div class="Messages">
+            <button id="comment_send_button" type="submit">Lähetä</button>
+        </form>
 
-        {% for message in messages %}
-        
-        <p>{{message.message}}</p>
-        <p>{{message.name}}</p>
-        <p>{{message.time.strftime("%H:%M %d-%m-%y")}}</p>
-        <hr>
+        <div class="messages">
 
-        {% endfor %}
+            {% for message in messages %}
 
+            <div class="message_instance">
+                <p>{{message.message}}</p>
+                <div style="display: flex; justify-content: space-between; width: 100%; padding-bottom: 5px; padding-right: 8px;">
+                    <span style="margin-right: auto;">{{message.name}}</span>
+                    <span style="padding-right: 8px;">{{message.time.strftime("%H:%M %d-%m-%y")}}</span>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
     </div>
 
 </body>
