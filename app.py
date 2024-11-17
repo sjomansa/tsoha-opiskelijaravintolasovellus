@@ -28,8 +28,9 @@ def get_messages(restaurant_id):
     return messages
 
 #Check if user is signed, otherwise redirect to login page
-@app.before_request
-def check_login():
+#There is a bug. Temporarily unavailable.
+#@app.before_request
+#def check_login():
     if request.endpoint not in ['index', 'register', 'login']:
         if not session.get('user'):
             return redirect("/")
