@@ -102,6 +102,7 @@
 
             <input type="hidden" name="restaurant_id" value={{ restaurant.id }}>
             <input type="hidden" name="restaurant_name" value={{ restaurant.name }}>
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 
             <button id="comment_send_button" type="submit">Lähetä</button>
         </form>

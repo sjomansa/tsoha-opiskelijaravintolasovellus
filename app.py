@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
 from os import getenv
+import secrets
 
 
 
@@ -60,6 +61,7 @@ def login():
             session["user"] = username
             session["user_id"] = user.id
             session["admin"] = user.admin
+            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/restaurants")
         
     return redirect("/register")
@@ -120,7 +122,12 @@ def send_message():
     
     #Check if message is too long
     if len(message) > 500:
-        return #Add error message here
+        return redirect("/") #Add error message here
+    
+    #Check that the session token matches users:
+    if session["csrf_token"] != request.form["csrf_token"]:
+        return redirect("/") #Add error message here
+    
     sql = text("INSERT INTO messages (r_id, u_id, message, time) VALUES (:r_id, :u_id, :message, NOW())")
     db.session.execute(sql, {"r_id":restaurant_id, "u_id":user_id, "message":message})
     db.session.commit()
