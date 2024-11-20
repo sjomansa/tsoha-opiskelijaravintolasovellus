@@ -1,0 +1,76 @@
+
+
+<head>
+
+    <style>
+
+        body {
+            margin: 0px;
+        }
+
+        h1 {
+            text-align: left;
+            padding-top: 10;
+            padding-bottom: 5;
+            padding-left: 10;
+        }
+
+
+        .navbar ul {
+            list-style-type: none;
+            background-color: hsl(145, 33%, 46%);
+            padding: 0px;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            display: block;
+            text-align: center;
+        }
+
+        .navbar .regularnavitem:hover{
+            background-color: hsl(145, 33%, 25%);;
+        }
+
+        .navbar #logout:hover{
+            background-color: red;
+        }
+        .navbar li {
+            float: left;
+        }
+
+
+    </style>
+
+
+
+
+</head>
+
+<body>
+    <h1>Opiskelijaravintolat</h1>
+    <nav class="navbar">
+        <ul>
+            <li class="regularnavitem"><a href="#news">Ravintolat</a>
+
+            {% if session.admin %}
+            <li class="regularnavitem"><a href="#news">Omat Ravintolat</a>
+            {% endif %}
+
+            <li id="logout"><a href="#news">Kirjaudu ulos</a>
+        </ul>
+    </nav>
+
+
+
+    <main>
+        {% block content %}
+        
+        {% endblock %}
+    </main>
+
+</body>
