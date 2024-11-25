@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+<head>
+    <style>
+
+    </style>
+</head>
+
+
+{% block content %}
+
+    <table style="width:100%">
+        
+        <tr>
+            <th>Ravintola</th>
+            <th>Tähdet</th>
+            <th>Odotusaika</th>
+            <th>Kaupunki</th>
+        </tr>
+        
+        {% for restaurant in restaurants %}
+
+        <tr> 
+          <td><a href="/restaurants/{{ restaurant.name }}">{{restaurant.name}}</a></td>
+          <td>{{restaurant.stars}}</td>
+          <td>{{restaurant.wait_time}} min</td>
+          <td>{{restaurant.city}}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% endblock %}
