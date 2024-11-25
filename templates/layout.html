@@ -55,10 +55,10 @@
     <h1>Opiskelijaravintolat</h1>
     <nav class="navbar">
         <ul>
-            <li class="regularnavitem"><a href="#news">Ravintolat</a>
+            <li class="regularnavitem"><a href="/restaurants">Ravintolat</a>
 
             {% if session.admin %}
-            <li class="regularnavitem"><a href="#news">Omat Ravintolat</a>
+            <li class="regularnavitem"><a href="/{{ session['user'] }}/restaurants">Omat Ravintolat</a>
             {% endif %}
 
             <li id="logout"><a href="#news">Kirjaudu ulos</a>

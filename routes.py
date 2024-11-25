@@ -124,6 +124,20 @@ def restaurant_info(name):
     return render_template("restaurantlayout.html", restaurant=restaurant, info=info, menu=menu, messages=messages)
 
 
+@app.route("/<user>/restaurants")
+def admin_restaurants_view(user):
+
+    if session["admin"]:
+
+        restaurant_data = get_main_restaurantdata(name=user)
+
+        return render_template("restaurants_admin_view.html", restaurants = restaurant_data )
+    
+    else:
+
+        return render_template("error.html", message="Sinulla ei ole oikeuksia päästä tälle sivulle :(")
+
+
 #Function for sending a message to restaurants message board
 @app.route("/send_message", methods = ["POST"])
 def send_message():

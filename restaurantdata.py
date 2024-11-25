@@ -6,15 +6,27 @@ import secrets
 
 
 
-def get_main_restaurantdata():
+def get_main_restaurantdata(name=None):
 
-    sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 0),1) AS wait_time,
-    R.city AS city FROM users U JOIN restaurants R ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = R.id LEFT JOIN r_quetimes ON r_quetimes.r_id = R.id
-    GROUP BY R.name, U.username, R.city;""")
+    if name:
+        
+        sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 0),1) AS wait_time,
+        R.city AS city FROM users U JOIN restaurants R ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = R.id LEFT JOIN r_quetimes ON r_quetimes.r_id = R.id
+        WHERE U.username =:name GROUP BY R.name, U.username, R.city;""")
 
-    result = db.session.execute(sql)
+        result = db.session.execute(sql, {"name":name})
 
-    restaurants_data = result.fetchall()
+        restaurants_data = result.fetchall()
+    
+    else:
+
+        sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 0),1) AS wait_time,
+        R.city AS city FROM users U JOIN restaurants R ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = R.id LEFT JOIN r_quetimes ON r_quetimes.r_id = R.id
+        GROUP BY R.name, U.username, R.city;""")
+
+        result = db.session.execute(sql)
+
+        restaurants_data = result.fetchall()
 
     return restaurants_data
 
