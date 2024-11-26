@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+
+    <style>
+
+        form {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-row {
+            margin: 10px;
+        }
+
+        #submit_button {
+            align-self: center;
+            max-width: 300;
+            padding: 10px;
+            font-size: small;
+            background-color: rgb(87, 103, 206);
+            border-radius: 6px;
+            color: white;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+    <form action="/{{ session['user'] }}/restaurants/new_restaurant" method="post">
+        
+          <label for ="name" class="form-row" >Ravintolan nimi:</label>
+          <input type="text" name="name" size="20" class="form-row">
+
+          <label for ="address" class="form-row" >Osoite:</label>
+          <input type="password" name="address" size="20" class="form-row">
+        
+          <label for ="city" class="form-row" >Kaupunki:</label>
+          <input type="password" name="city" size="20" class="form-row">
+
+          <input id="submit_button" type="submit" value="Luo uusi ravintola">
+
+      </form>
+
+{% endblock %}

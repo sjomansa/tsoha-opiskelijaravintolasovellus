@@ -1,7 +1,7 @@
 #Application routes and their functions
 from app import app
 from flask import redirect, render_template, request, session
-from users import login_user, register_user
+from users import login_user, logout_user, register_user
 from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata
 from comments import insert_comment
 
@@ -54,6 +54,13 @@ def login():
     
     except:
         return render_template("error.html", message="Kirjautuminen epäonnistui") #Add more detailed error message here
+    
+
+@app.route("/logout")
+def logout():
+
+    logout_user(session)
+    return redirect("/")
 
 
     # sql = text("SELECT password, admin, id FROM users WHERE username=:username")
@@ -166,6 +173,15 @@ def send_message():
     # db.session.commit()
 
     return redirect(f"/restaurants/{restaurant_name}")
+
+@app.route("/<user>/restaurants/new_restaurant", methods = ["GET", "POST"])
+def create_restaurant(user):
+
+    if request.method == "GET":
+        return render_template("create_restaurant_view.html", user=user)
+    else:
+        return redirect("/")
+
 
 
 # @app.route("/register_user", methods=["POST"])

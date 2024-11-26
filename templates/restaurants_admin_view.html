@@ -1,12 +1,41 @@
 {% extends "layout.html" %}
-<head>
+
+    {% block heading %}
     <style>
+    
+    .container {
+        display: flex;
+        flex-direction: row;
+        margin-top: 20px;
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .create_restaurant_button {
+        background-color: rgb(87, 103, 206);
+        padding: 7px;
+        display: inline-block;
+        text-align: center;
+        border-radius: 10px;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
 
     </style>
-</head>
+    {% endblock %}
+
 
 
 {% block content %}
+
+
+
+    <div class="container">
 
     <table style="width:100%">
         
@@ -29,5 +58,14 @@
         {% endfor %}
 
     </table>
+
+    <div class="create_restaurant_button">
+        <aside><a href="/{{ session['user'] }}/restaurants/new_restaurant"> Lisää uusi ravintola </a></aside>
+    </div>
+
+
+    </div>  
+
+    
 
 {% endblock %}
