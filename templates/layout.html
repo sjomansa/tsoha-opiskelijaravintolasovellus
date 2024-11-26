@@ -43,8 +43,11 @@
             float: left;
         }
 
-
     </style>
+
+    {% block heading %}
+        
+    {% endblock %}
 
 
 
@@ -61,7 +64,7 @@
             <li class="regularnavitem"><a href="/{{ session['user'] }}/restaurants">Omat Ravintolat</a>
             {% endif %}
 
-            <li id="logout"><a href="#news">Kirjaudu ulos</a>
+            <li id="logout"><a href="/logout">Kirjaudu ulos</a>
         </ul>
     </nav>
 
