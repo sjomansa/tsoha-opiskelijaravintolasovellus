@@ -26,6 +26,12 @@ def login_user(username, password, session):
         
     else:
         raise ValueError("Username not found, are you already registered?")
+    
+def logout_user(session):
+    del session["user"]
+    del session["user_id"]
+    del session["admin"]
+    del session["csrf_token"]
 
 def register_user(username, password1, password2, admin):
 
