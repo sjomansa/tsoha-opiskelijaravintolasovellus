@@ -1,4 +1,6 @@
-<head>
+{% extends "layout.html" %}
+
+{% block heading %}
 
     <title>Ravintola {{restaurant.name}}</title>
 
@@ -51,10 +53,12 @@
 
     </style>
 
-</head>
+{% endblock %}
 
-<body>
-    <h1>{{ restaurant.name }}</h1>
+{% block content %}
+
+
+<h1>{{ restaurant.name }}</h1>
     <br>
     <table>
         <td><h3>{{ restaurant.rating }}</h3></td>
@@ -124,4 +128,4 @@
         </div>
     </div>
 
-</body>
+{% endblock %}
