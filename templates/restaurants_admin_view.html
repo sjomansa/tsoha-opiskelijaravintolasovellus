@@ -20,7 +20,7 @@
         border-radius: 10px;
     }
 
-    a {
+    #create_button_label {
         text-decoration: none;
         color: white;
     }
@@ -60,7 +60,7 @@
     </table>
 
     <div class="create_restaurant_button">
-        <aside><a href="/{{ session['user'] }}/restaurants/new_restaurant"> Lisää uusi ravintola </a></aside>
+        <aside><a id="create_button_label" href="/{{ session['user'] }}/restaurants/new_restaurant"> Lisää uusi ravintola </a></aside>
     </div>
 
 

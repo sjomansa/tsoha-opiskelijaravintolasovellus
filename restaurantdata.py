@@ -10,7 +10,7 @@ def get_main_restaurantdata(name=None):
 
     if name:
         
-        sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 0),1) AS wait_time,
+        sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 0),0) AS wait_time,
         R.city AS city FROM users U JOIN restaurants R ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = R.id LEFT JOIN r_quetimes ON r_quetimes.r_id = R.id
         WHERE U.username =:name GROUP BY R.name, U.username, R.city;""")
 
@@ -61,4 +61,17 @@ def get_singular_restaurantdata(name: str):
     messages = get_messages(restaurant.id)
 
     return restaurant, info, menu, messages
+
+
+def create_new_restaurant(owner_id, name, address, city):
+
+    sql = text("""
+               INSERT INTO restaurants (owner_id, name, address, city) VALUES (:owner_id, :name, :address, :city)
+               """)
+    try:
+        db.session.execute(sql, {"owner_id":owner_id, "name":name, "address":address, "city":city})
+        db.session.commit()
+        print("success")
+    except Exception as e:
+        raise ValueError("Error creating a new restaurant")
         

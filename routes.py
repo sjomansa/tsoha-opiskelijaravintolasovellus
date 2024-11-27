@@ -2,7 +2,7 @@
 from app import app
 from flask import redirect, render_template, request, session
 from users import login_user, logout_user, register_user
-from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata
+from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata, create_new_restaurant
 from comments import insert_comment
 
 @app.route("/")
@@ -180,7 +180,15 @@ def create_restaurant(user):
     if request.method == "GET":
         return render_template("create_restaurant_view.html", user=user)
     else:
-        return redirect("/")
+        try:
+            user_id = session["user_id"]
+            name = request.form["name"]
+            address = request.form["address"]
+            city = request.form["city"]
+            create_new_restaurant(user_id, name, address, city)
+            return redirect("/{session.user}/restaurants")
+        except Exception as e:
+            return render_template("error.html", message=e)
 
 
 
