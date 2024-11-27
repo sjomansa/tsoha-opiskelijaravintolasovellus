@@ -143,7 +143,21 @@ def admin_restaurants_view(user):
     else:
 
         return render_template("error.html", message="Sinulla ei ole oikeuksia päästä tälle sivulle :(")
+    
+@app.route("/<user>/restaurants/<restaurant_name>")
+def admin_restaurant_view(user, restaurant_name):
 
+    if session["admin"]:
+
+        restaurant_data = get_singular_restaurantdata(name=restaurant_name)
+
+        if restaurant_data[0].owner != session["user"]:
+            return render_template("error.html", message="Sinulla ei ole oikeuksia päästä tälle sivulle :(")
+
+        return render_template("restaurant_admin_view.html")
+    else:
+
+        return render_template("error.html", message="Sinulla ei ole oikeuksia päästä tälle sivulle :(")
 
 #Function for sending a message to restaurants message board
 @app.route("/send_message", methods = ["POST"])

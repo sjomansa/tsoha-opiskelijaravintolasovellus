@@ -49,7 +49,7 @@
         {% for restaurant in restaurants %}
 
         <tr> 
-          <td><a href="/restaurants/{{ restaurant.name }}">{{restaurant.name}}</a></td>
+          <td><a href="/{{ session['user'] }}/restaurants/{{ restaurant.name }}">{{restaurant.name}}</a></td>
           <td>{{restaurant.stars}}</td>
           <td>{{restaurant.wait_time}} min</td>
           <td>{{restaurant.city}}</td>
