@@ -2,7 +2,7 @@
 from app import app
 from flask import redirect, render_template, request, session
 from users import login_user, logout_user, register_user
-from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata, create_new_restaurant, update_menu, update_restaurant_info, insert_menuitem
+from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata, create_new_restaurant, update_menu, update_restaurant_info, insert_menuitem, delete_menuitem
 from comments import insert_comment
 
 @app.route("/")
@@ -150,6 +150,7 @@ def admin_restaurant_view(user, restaurant_name):
     restaurant, info, menu, messages = get_singular_restaurantdata(name=restaurant_name)
 
     if request.method == "GET":
+        #The actual admin view of a single restaurant
 
         if session["admin"]:
 
@@ -192,11 +193,19 @@ def admin_restaurant_view(user, restaurant_name):
                 item_id = key.split("_")[1]
                 food = value
                 price = float(request.form.get(f"price_{item_id}"))
-
-                try:
-                    update_menu(item_id, food, price)
-                except Exception as e:
-                    return render_template("error.html", message=e)
+                deleteitem = request.form.get(f"{item_id}_delete")
+                if deleteitem:
+                    try:
+                        delete_menuitem(item_id)
+                    except:
+                        raise ValueError(f"Error deleting {food} from the database")
+                
+                else:
+                    #If we dont want to delete the item, we need to update its information to the database
+                    try:
+                        update_menu(item_id, food, price)
+                    except Exception as e:
+                        return render_template("error.html", message=e)
                 
         newfood = request.form["menuitem"]
         newfood_price = request.form["menuitem_price"]
