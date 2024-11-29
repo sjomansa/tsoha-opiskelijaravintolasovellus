@@ -16,7 +16,7 @@ In each restaurant page, student users are able to chat about the restaurant in 
 
   -Restaurant owners can acess a special view where they can see all their restaurants.
 
-  -Restaurant owner can add new restaurants. They can edit their own restaurants information (menu, opening time, location, city). They can also delete their own restaurants. (Everything except deletion is complete. Also, deleting menu items is still coming)
+  -Restaurant owner can add new restaurants. They can edit their own restaurants information (menu, opening time, location, city). They can also delete their own restaurants. (Everything except deletion is complete)
 
   -Looks need to be improved
 
