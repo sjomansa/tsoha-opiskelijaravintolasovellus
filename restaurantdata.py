@@ -52,7 +52,7 @@ def get_singular_restaurantdata(name: str):
     info = result.fetchone()
 
     sql = text("""
-        SELECT M.food AS food, M.price AS price FROM restaurants R LEFT JOIN r_menus AS M ON R.id = M.r_id 
+        SELECT M.id AS id, M.food AS food, M.price AS price FROM restaurants R LEFT JOIN r_menus AS M ON R.id = M.r_id 
         WHERE R.name =:name;
         """)
     result = db.session.execute(sql, {"name":name})
@@ -71,7 +71,81 @@ def create_new_restaurant(owner_id, name, address, city):
     try:
         db.session.execute(sql, {"owner_id":owner_id, "name":name, "address":address, "city":city})
         db.session.commit()
-        print("success")
+        #print("success")
     except Exception as e:
         raise ValueError("Error creating a new restaurant")
-        
+
+    
+
+def update_menu(item_id, food, price):
+
+    sql = text('''
+        UPDATE r_menus
+        SET food =:food, price =:price
+        WHERE id =:item_id
+    '''
+    )
+    try:
+        db.session.execute(sql, {"food":food, "price":price, "item_id":item_id})
+        db.session.commit()
+    except Exception as e:
+        raise ValueError("Error updating the menu :/")
+
+def update_restaurant_info(r_id, name, address, city, info, open_times):
+
+    sql = text('''
+        UPDATE restaurants
+        SET name =:name, address =:address, city =:city
+        WHERE name =:name
+    '''
+    )
+
+    try:
+        db.session.execute(sql, {"name":name, "address":address, "city":city})
+        db.session.commit()
+    except Exception as e:
+        raise ValueError("Error updating the restaurants name and address information :/")
+    
+    sql = text("SELECT infotext FROM r_info WHERE r_id =:r_id")
+
+    result = db.session.execute(sql, {"r_id":r_id})
+    current_info = result.fetchone()
+
+    #Check that there is a current infotext of the restaurant. If not, create one.
+    if not current_info:
+        sql = text('''
+                   INSERT INTO r_info (r_id, infotext, open_times)
+                   VALUES (:r_id, :infotext, :open_times)
+                   ''')
+        try:
+            db.session.execute(sql, {"r_id":r_id, "infotext":info, "open_times":open_times})
+            db.session.commit()
+        except:
+            raise ValueError("Error creating an infotext to the restaurant")
+
+    else:
+        sql = text('''
+            UPDATE r_info
+            SET infotext =:infotext, open_times =:open_times
+            WHERE r_id =:r_id
+        '''
+        )
+
+        try:
+            db.session.execute(sql, {"infotext":info, "open_times":open_times, "r_id":r_id})
+            db.session.commit()
+        except:
+            raise ValueError("Error updating the information-text and opening-times")
+    
+def insert_menuitem(r_id, food, price):
+
+    r_id = int(r_id)
+    try:
+        sql = text('''
+            INSERT INTO r_menus (r_id, food, price) VALUES (:r_id, :food, :price)
+        '''
+           )
+        db.session.execute(sql, {"r_id":r_id, "food":food, "price":price})
+        db.session.commit()
+    except:
+        raise ValueError("Error inserting a new menuitem")

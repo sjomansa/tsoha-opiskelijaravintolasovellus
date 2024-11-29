@@ -2,7 +2,7 @@
 from app import app
 from flask import redirect, render_template, request, session
 from users import login_user, logout_user, register_user
-from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata, create_new_restaurant
+from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata, create_new_restaurant, update_menu, update_restaurant_info, insert_menuitem
 from comments import insert_comment
 
 @app.route("/")
@@ -144,20 +144,77 @@ def admin_restaurants_view(user):
 
         return render_template("error.html", message="Sinulla ei ole oikeuksia päästä tälle sivulle :(")
     
-@app.route("/<user>/restaurants/<restaurant_name>")
+@app.route("/<user>/restaurants/<restaurant_name>", methods = ["GET", "POST"])
 def admin_restaurant_view(user, restaurant_name):
 
-    if session["admin"]:
+    restaurant, info, menu, messages = get_singular_restaurantdata(name=restaurant_name)
 
-        restaurant_data = get_singular_restaurantdata(name=restaurant_name)
+    if request.method == "GET":
 
-        if restaurant_data[0].owner != session["user"]:
+        if session["admin"]:
+
+            #Check that the restaurant belongs to the session user
+            if restaurant.owner != session["user"]:
+                return render_template("error.html", message="Sinulla ei ole oikeuksia päästä tälle sivulle :(")
+            
+            #Check that menu has items, change it to an empty list if it does not
+
+            if menu[0][0] == None:
+                menu = []
+
+
+            return render_template("restaurant_admin_view.html", restaurant=restaurant, info=info, menu=menu)
+        
+        else:
+            #I guess I could delete this later
             return render_template("error.html", message="Sinulla ei ole oikeuksia päästä tälle sivulle :(")
-
-        return render_template("restaurant_admin_view.html")
+        
     else:
+        #Handle updating the information of the restaurant.
 
-        return render_template("error.html", message="Sinulla ei ole oikeuksia päästä tälle sivulle :(")
+        name = request.form["restaurant_name"]
+        address = request.form["address"]
+        city = request.form["city"]
+
+        infotext = request.form["infotext"]
+        open_times = request.form["open_times"]
+
+        id = int(restaurant.id)
+
+        try:
+            update_restaurant_info(id, name, address, city, infotext, open_times)
+        except Exception as e:
+            return render_template("error.html", message=e)
+
+
+        for key, value in request.form.items():
+            if key.startswith("name_"):
+                item_id = key.split("_")[1]
+                food = value
+                price = float(request.form.get(f"price_{item_id}"))
+
+                try:
+                    update_menu(item_id, food, price)
+                except Exception as e:
+                    return render_template("error.html", message=e)
+                
+        newfood = request.form["menuitem"]
+        newfood_price = request.form["menuitem_price"]
+
+        if len(newfood) > 0 and len(newfood_price) > 0:
+            newfood_price = float(newfood_price)
+            if newfood_price > 0:
+                try:
+                    insert_menuitem(restaurant.id, newfood, newfood_price)
+                except Exception as e:
+                        return render_template("error.html", message=e)
+            
+        return redirect(f"/{session['user']}/restaurants/{restaurant.name}")
+
+            
+
+
+
 
 #Function for sending a message to restaurants message board
 @app.route("/send_message", methods = ["POST"])
