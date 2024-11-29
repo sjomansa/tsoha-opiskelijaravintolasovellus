@@ -149,3 +149,13 @@ def insert_menuitem(r_id, food, price):
         db.session.commit()
     except:
         raise ValueError("Error inserting a new menuitem")
+    
+def delete_menuitem(id):
+
+    sql = text("DELETE FROM r_menus WHERE id =:id")
+
+    try:
+        db.session.execute(sql, {"id":id})
+        db.session.commit()
+    except:
+        raise ValueError("Could not delete item")
