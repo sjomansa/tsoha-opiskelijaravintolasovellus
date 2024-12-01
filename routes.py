@@ -271,7 +271,7 @@ def create_restaurant(user):
                 return redirect("/{session.user}/restaurants")
 
             create_new_restaurant(user_id, name, address, city)
-            return redirect("/{session.user}/restaurants")
+            return redirect(f"/{session['user']}/restaurants")
         except Exception as e:
             return render_template("error.html", message=e)
 

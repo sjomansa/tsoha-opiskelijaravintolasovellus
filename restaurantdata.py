@@ -66,20 +66,22 @@ def get_singular_restaurantdata(name: str):
 def create_new_restaurant(owner_id, name, address, city):
 
     #Check if username is taken
-    restaurant = get_singular_restaurantdata(name)[0]
+    if get_singular_restaurantdata(name) == None:
 
-    if restaurant.name == name:
-        raise ValueError("Ravintolaa ei voitu luoda, nimi on jo käytössä")
-
-    sql = text("""
+        sql = text("""
                INSERT INTO restaurants (owner_id, name, address, city) VALUES (:owner_id, :name, :address, :city)
                """)
-    try:
-        db.session.execute(sql, {"owner_id":owner_id, "name":name, "address":address, "city":city})
-        db.session.commit()
-        #print("success")
-    except Exception as e:
-        raise ValueError("Error creating a new restaurant")
+        try:
+            db.session.execute(sql, {"owner_id":owner_id, "name":name, "address":address, "city":city})
+            db.session.commit()
+            #print("success")
+        except Exception as e:
+            raise ValueError("Error creating a new restaurant")
+    #Else block if username is taken
+    else:
+        raise ValueError("Ravintolaa ei voitu luoda, nimi on jo käytössä")
+
+    
 
     
 
