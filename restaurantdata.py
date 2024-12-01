@@ -65,6 +65,12 @@ def get_singular_restaurantdata(name: str):
 
 def create_new_restaurant(owner_id, name, address, city):
 
+    #Check if username is taken
+    restaurant = get_singular_restaurantdata(name)[0]
+
+    if restaurant.name == name:
+        raise ValueError("Ravintolaa ei voitu luoda, nimi on jo käytössä")
+
     sql = text("""
                INSERT INTO restaurants (owner_id, name, address, city) VALUES (:owner_id, :name, :address, :city)
                """)

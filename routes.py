@@ -265,6 +265,11 @@ def create_restaurant(user):
             name = request.form["name"]
             address = request.form["address"]
             city = request.form["city"]
+
+            #Check that any field is not empty
+            if not name or not address or not city:
+                return redirect("/{session.user}/restaurants")
+
             create_new_restaurant(user_id, name, address, city)
             return redirect("/{session.user}/restaurants")
         except Exception as e:
