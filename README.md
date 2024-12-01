@@ -2,23 +2,27 @@ Application shows the student-restaurants for in a list view. Each restaurant ha
 
 In each restaurant page, student users are able to chat about the restaurant in the comment section, see its menu for the day, rate and add que times for the restaurant, see information (opening times, adress) and add information about any specialities about the restaurant (Special made chili sauce, Special coffee availabe, funny staff member...)
 
-  -Users can filter restaurants based on owner, rating and que time. (Not implemented Yet)
+  -Users can filter restaurants based on owner, rating and que time. (Coming) 🟨
 
-  -Users can sort by owner, rating and que time on the restaurant list view. (Coming)
+  -Users can sort by owner, rating and que time on the restaurant list view. (Coming) 🟨
   
-  -A user can sign in / register as a restaurant or a student.
+  -A user can sign in / register as a restaurant or a student. They can also sign out. 🟩
 
-  -User can rate a restaurant and add a que time. Detail view will show the average of this rating / que time. (Rating coming)
+  -User can rate a restaurant and add a que time. Detail view will show the average of this rating / que time. (Coming) 🟨
 
-  -User can write a comment about a restaurant in the comment section. They are able to see other comments about the restaurant.
+  -User can write a comment about a restaurant in the comment section. They are able to see other comments about the restaurant. 🟩
 
-  -Users can add a comment/note about a speciality in the restaurant. They can like other such notes so that the specialities are shown in order by most likes in the restaurants page. (Not implemented yet)
+  -Users can add a comment/note about a speciality in the restaurant. They can like other such notes so that the specialities are shown in order by most likes in the restaurants page. (Coming) 🟨
 
-  -Restaurant owners can acess a special view where they can see all their restaurants.
+  -Restaurant owners can acess a special view where they can see all their restaurants. 🟩
 
-  -Restaurant owner can add new restaurants. They can edit their own restaurants information (menu, opening time, location, city). They can also delete their own restaurants. (Everything except deletion is complete)
+  -Restaurant owner can add new restaurants. They can edit their own restaurants information (menu, opening time, location, city). They can also delete their own restaurants. (Everything except deletion is complete) 🟨
 
   -Looks need to be improved
+
+  -Need to implement checking for session user (currently you are able to access certain views without being signed in)
+
+  -Error messages need to be in finnish
 
 
 INSTRUCTIONS FOR LOCAL TESTING:
