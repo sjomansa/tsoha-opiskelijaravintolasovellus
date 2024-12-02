@@ -2,7 +2,7 @@
 from app import app
 from flask import redirect, render_template, request, session
 from users import login_user, logout_user, register_user
-from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata, create_new_restaurant, update_menu, update_restaurant_info, insert_menuitem, delete_menuitem
+from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata, create_new_restaurant, update_menu, update_restaurant_info, insert_menuitem, delete_menuitem, insert_rating
 from comments import insert_comment
 
 @app.route("/")
@@ -129,6 +129,25 @@ def restaurant_info(name):
         return render_template("error.html", message = "No restaurant found, are you sure this restaurant exists?")
 
     return render_template("restaurantlayout.html", restaurant=restaurant, info=info, menu=menu, messages=messages)
+
+
+
+@app.route("/restaurants/<name>/rate_restaurant", methods = ["GET", "POST"])
+def rate_restaurant(name):
+    if request.method == "GET":
+        return render_template("add_rating_view.html", name=name)
+    
+    else:
+        #Add rating to the database and go back to restaurant-view
+        rating = int(request.form["rating"])
+        try:
+            r_data = get_singular_restaurantdata(name)[0]
+            r_id = r_data.id
+            print(r_id)
+            insert_rating(r_id, rating)
+            return redirect(f"/restaurants/{name}")
+        except Exception as e:
+            return render_template("error.html", message="Ongelma arvion lisäämisessä palvelimelle")
 
 
 @app.route("/<user>/restaurants")

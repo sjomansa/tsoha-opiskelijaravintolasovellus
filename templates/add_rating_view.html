@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    <style>
+
+        input {
+            width: 200px;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            margin: 50px;
+        }
+
+        .functionality {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+    </style>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<h2>{{ name }}</h2>
+
+<div class="content">
+<form action="/restaurants/{{ name }}/rate_restaurant" method="post">
+    <div class="functionality">
+    <label for ="rating" class="form-row" >Anna arvio ravintolasta:</label>
+    <input type="number" step="1" max="5" min="1" name="rating" size="10" placeholder="Anna arvio välillä 1-5" list="arvosanat">
+    <input id="submit_button" type="submit" value="Lähetä arvio">
+    </div>
+
+    <datalist id="arvosanat">
+        <option value="1"></option>
+        <option value="2"></option>
+        <option value="3"></option>
+        <option value="4"></option>
+        <option value="5"></option>
+      </datalist>
+</form>
+</div>
+
+{% endblock %}
