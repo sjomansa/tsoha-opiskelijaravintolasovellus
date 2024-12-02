@@ -50,6 +50,20 @@
             padding: 15px;
             box-sizing: border-box;
         }
+        .restaurantproperties {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-top: 20px;
+            max-width: 1000;
+            gap: 150px;
+        }
+
+        .add_rating_waittime {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+        }
 
     </style>
 
@@ -60,13 +74,18 @@
 
 <h1>{{ restaurant.name }}</h1>
     <br>
+    <div class="restaurantproperties">
     <table>
         <td><h3>{{ restaurant.rating }}</h3></td>
         <td><h3>{{ restaurant.wait_time }} min</h3></td>
         <td><h3>{{ restaurant.owner }}</h3></td>
         <td><h3>{{ restaurant.address }}</h3></td>
     </table>
-    
+    <div class="add_rating_waittime">
+        <a href="/restaurants/{{ restaurant.name }}/rate_restaurant">Lisää arvostelu</a>
+        <a href="#">Lisää Odotusaika</a>
+    </div>
+    </div>
 
     <hr>
     <br>

@@ -174,8 +174,6 @@ def insert_rating(id, rating):
     try:
         sql = text("INSERT INTO r_stars (r_id, rating) VALUES (:r_id, :rating)")
         db.session.execute(sql, {"r_id":id, "rating":rating})
-        print("Commiting")
         db.session.commit()
     except Exception as e:
-        print(e)
         raise ValueError(e)
