@@ -62,7 +62,20 @@
         .add_rating_waittime {
             display: flex;
             flex-direction: row;
+            align-items: baseline;
             gap: 20px;
+        }
+
+        #add_quetime_form {
+            display: flex;
+            flex-direction: row;
+            gap: 9px;
+        }
+
+        #add_quetime_form input {
+            max-height: 35px;
+            width: 70px;
+
         }
 
     </style>
@@ -83,7 +96,11 @@
     </table>
     <div class="add_rating_waittime">
         <a href="/restaurants/{{ restaurant.name }}/rate_restaurant">Lisää arvostelu</a>
-        <a href="#">Lisää Odotusaika</a>
+        <form id="add_quetime_form" action ="/restaurants/{{ restaurant.name }}" method="POST">
+            <label for="quetime">Lisää odotusaika</label>
+            <input type="number" step="1" max="60" min="1" name="quetime" size="30">
+            <input id="submit_button" type="submit" value="Lisää">
+        </form>
     </div>
     </div>
 
