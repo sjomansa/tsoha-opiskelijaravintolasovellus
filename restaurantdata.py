@@ -177,3 +177,12 @@ def insert_rating(id, rating):
         db.session.commit()
     except Exception as e:
         raise ValueError(e)
+    
+def insert_quetime(id, quetime):
+
+    try:
+        sql = text("INSERT INTO r_quetimes (r_id, que_time) VALUES (:r_id, :que_time)")
+        db.session.execute(sql, {"r_id":id, "que_time":quetime})
+        db.session.commit()
+    except:
+        raise ValueError("Error inserting quetime to server")
