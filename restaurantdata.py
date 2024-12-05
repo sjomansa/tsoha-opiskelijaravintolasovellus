@@ -6,7 +6,7 @@ import secrets
 
 
 
-def get_main_restaurantdata(name=None):
+def get_main_restaurantdata(name=None, sort=None, sortorder=None):
 
     if name:
         
@@ -19,14 +19,38 @@ def get_main_restaurantdata(name=None):
         restaurants_data = result.fetchall()
     
     else:
+        #Check if any ordering of data is required
+        if not sort:
 
-        sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 0),1) AS wait_time,
-        R.city AS city FROM users U JOIN restaurants R ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = R.id LEFT JOIN r_quetimes ON r_quetimes.r_id = R.id
-        GROUP BY R.name, U.username, R.city;""")
+            sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 0),1) AS wait_time,
+            R.city AS city FROM users U JOIN restaurants R ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = R.id LEFT JOIN r_quetimes ON r_quetimes.r_id = R.id
+            GROUP BY R.name, U.username, R.city;""")
 
-        result = db.session.execute(sql)
+            result = db.session.execute(sql)
 
-        restaurants_data = result.fetchall()
+            restaurants_data = result.fetchall()
+        
+        else:
+
+            if sort == "Ravintola":
+                sortvalue = "name"
+            elif sort == "Ravintoloitsija":
+                sortvalue = "owner"
+            elif sort == "tahdet":
+                sortvalue = "stars"
+            elif sort == "odotusaika":
+                sortvalue = "wait_time"
+            else:
+                sortvalue = "city"
+            
+            sql = f"""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 0),1) AS wait_time,
+            R.city AS city FROM users U JOIN restaurants R ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = R.id LEFT JOIN r_quetimes ON r_quetimes.r_id = R.id
+            GROUP BY R.name, U.username, R.city ORDER BY {sortvalue} {sortorder}"""
+
+            result = db.session.execute(text(sql))
+
+            restaurants_data = result.fetchall()
+
 
     return restaurants_data
 

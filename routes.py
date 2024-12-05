@@ -80,7 +80,7 @@ def logout():
 
 
 #Main restaurant view of opiskelijaravintolat, where you can see the list of all restaurants
-@app.route("/restaurants")
+@app.route("/restaurants", methods=["GET", "POST"] )
 def restaurants_view():
 
     # sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 0),1) AS wait_time,
@@ -90,8 +90,20 @@ def restaurants_view():
     # result = db.session.execute(sql)
 
     # restaurants_data = result.fetchall()
+    if request.method == "GET":
 
-    restaurants_data = get_main_restaurantdata()
+        restaurants_data = get_main_restaurantdata()
+
+    else:
+
+        sortvalue = request.form["sortvalue"]
+        sortorder = request.form["sortorder"]
+
+        if sortvalue == "1":
+            restaurants_data = get_main_restaurantdata()
+            
+        else:
+            restaurants_data = get_main_restaurantdata(sort = sortvalue, sortorder= sortorder)
 
     return render_template("restaurants.html", restaurants=restaurants_data)
 
