@@ -210,3 +210,12 @@ def insert_quetime(id, quetime):
         db.session.commit()
     except:
         raise ValueError("Error inserting quetime to server")
+
+def delete_restaurant_from_db(r_id):
+
+    try:
+        sql = text("DELETE FROM restaurants WHERE id =:r_id")
+        db.session.execute(sql, {"r_id":r_id})
+        db.session.commit()
+    except Exception as e:
+        raise ValueError(f"Error deleting restaurant {e}")

@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    <style>
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            margin-top: 150px;
+            gap: 15px;
+        }
+
+        #goback {
+            text-decoration: none;
+            color: white;
+            background-color: hsl(145, 33%, 25%);
+            padding-inline: 10px;
+            padding-block: 2px;
+            border-radius: 10px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <form action="/{{ session['user'] }}/restaurants/{{ restaurant.name }}/delete_restaurant" method="post">
+        <label for="delete">Haluan poistaa ravintolan {{ restaurant.name }}:</label>
+        <input type="checkbox" name="delete" value="delete_1">
+        <input type="submit" value="Poista ravintola">
+    </form>
+    
+    <a id="goback" href ="/{{ session['user'] }}/restaurants/{{ restaurant.name }}">Palaa takaisin</a>
+</div>
+
+{% endblock %}
+

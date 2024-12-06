@@ -2,23 +2,49 @@
 
     {% block heading %}
     <style>
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 500px;
+    }
     
     form {
             display: flex;
             flex-direction: column;
             margin-top: 20px;
             max-width: 1400px;
+            min-width: 500px;
             margin-left: auto;
             margin-right: auto;
         }
     
+    #deletebutton {
+            margin-top: 30px;
+            text-decoration: none;
+            color: white;
+            background-color: hsl(145, 33%, 25%);
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 150px;
+            
+    }   
+
+    #deletebutton:hover{
+            background-color: red;
+        }
 
     </style>
+
+
     {% endblock %}
 
 
 
 {% block content %}
+
+<div class="container">
 
 <form action="/{{ session['user'] }}/restaurants/{{ restaurant.name }}" method="post">
         
@@ -62,7 +88,9 @@
 
     <input id="submit_button" type="submit" value="Päivitä tietoja">
 
+
 </form>
 
-
+<a id="deletebutton" href="/{{ session['user'] }}/restaurants/{{ restaurant.name }}/delete_restaurant">Poista ravintola</a>
+</div>
 {% endblock %}

@@ -11,6 +11,11 @@
             text-align: left;
         }
 
+        .info_menu_grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr
+        }
+
 
         .message_instance {
             width: 500px;
@@ -106,31 +111,36 @@
 
     <hr>
     <br>
-    <h2>Info:</h2>
-    <div class="info">
-        <div class="infotext">
-            <p>{{ info.infotext }}</p>
+
+    <div class="info_menu_grid">
+        <div class="info">
+            <h2>Info:</h2>
+                <div class="infotext">
+                    <p>{{ info.infotext }}</p>
+                </div>
+                <div class="open_times">
+                    <p>Aukioloajat: {{ info.open_times }}</p>
+                </div>
         </div>
-        <div class="open_times">
-            <p>Aukioloajat: {{ info.open_times }}</p>
-        </div>
-    </div>
 
     <br>
-    <h2>Ruokalista</h2>
-    <ul class="menu">
+        <div class="menu">
+            <h2>Ruokalista</h2>
+                <ul>
 
-        {% for fooditem in menu %}
-        <div class="menuitem">
-            <li>{{ fooditem.food }}</li>          
+                    {% for fooditem in menu %}
+                        <div class="menuitem">
+                            <li>{{ fooditem.food }}</li>          
+                        </div>
+                            
+                        <div class="menuitem">
+                            <li>{{ fooditem.price }}€</li>
+                        </div>
+                        <br>
+                    {% endfor %}
+                </ul>
         </div>
-        
-        <div class="menuitem">
-            <li>{{ fooditem.price }}€</li>
-        </div>
-        <br>
-        {% endfor %}
-    </ul>
+    </div>
 
     <br> <br>
 

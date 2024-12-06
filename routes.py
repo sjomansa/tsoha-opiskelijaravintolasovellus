@@ -2,7 +2,7 @@
 from app import app
 from flask import redirect, render_template, request, session
 from users import login_user, logout_user, register_user
-from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata, create_new_restaurant, update_menu, update_restaurant_info, insert_menuitem, delete_menuitem, insert_rating, insert_quetime
+from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata, create_new_restaurant, update_menu, update_restaurant_info, insert_menuitem, delete_menuitem, insert_rating, insert_quetime, delete_restaurant_from_db
 from comments import insert_comment
 
 @app.route("/")
@@ -101,7 +101,7 @@ def restaurants_view():
 
         if sortvalue == "1":
             restaurants_data = get_main_restaurantdata()
-            
+
         else:
             restaurants_data = get_main_restaurantdata(sort = sortvalue, sortorder= sortorder)
 
@@ -241,6 +241,41 @@ def admin_restaurant_view(user, restaurant_name):
         return redirect(f"/{session['user']}/restaurants/{restaurant.name}")
 
             
+
+@app.route("/<user>/restaurants/<restaurant_name>/delete_restaurant", methods = ["GET", "POST"])
+def delete_restaurant(user, restaurant_name):
+
+    restaurant, info, menu, messages = get_singular_restaurantdata(name=restaurant_name)
+
+
+
+
+        #Check that the restaurant belongs to the session user
+    if restaurant.owner != session["user"]:
+        return render_template("error.html", message="Sinulla ei ole oikeuksia päästä tälle sivulle :(")
+
+
+    
+    if request.method == "GET":
+        return render_template("delete_restaurant.html", restaurant=restaurant)
+        
+    else:
+        print("Here")
+        should_delete = request.form.getlist("delete")
+
+        print("Should?")
+        
+
+        if should_delete:
+            try:
+                delete_restaurant_from_db(restaurant.id)
+                return redirect(f"/{session['user']}/restaurants")
+            except Exception as e:
+                return render_template("error.html", message=e)
+            
+        else:
+            return redirect(f"/{session['user']}/restaurants/{restaurant.name}")
+
 
 
 
