@@ -121,6 +121,7 @@ def update_menu(item_id, food, price):
     '''
     )
     try:
+
         db.session.execute(sql, {"food":food, "price":price, "item_id":item_id})
         db.session.commit()
     except Exception as e:

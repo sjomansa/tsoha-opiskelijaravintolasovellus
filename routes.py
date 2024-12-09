@@ -89,10 +89,10 @@ def restaurants_view():
 @app.route("/restaurants/<name>", methods=["GET", "POST"])
 def restaurant_info(name):
 
-    restaurant, info, menu, messages = get_singular_restaurantdata(name)
-
-    if restaurant is None:
-            return render_template("error.html", message = "No restaurant found, are you sure this restaurant exists?")
+    try:
+        restaurant, info, menu, messages = get_singular_restaurantdata(name)
+    except:
+        return render_template("error.html", message = "Ravintolaa ei löydy, oletko varma, että tämän niminen ravintola on olemassa?")
 
     if request.method == "GET":
 
@@ -118,7 +118,10 @@ def rate_restaurant(name):
     
     else:
         #Add rating to the database and go back to restaurant-view
-        rating = int(request.form["rating"])
+        try:
+            rating = int(request.form["rating"])
+        except:
+            return render_template("error.html", message="Syötä arvo väliltä 1-5")
         try:
             r_data = get_singular_restaurantdata(name)[0]
             r_id = r_data.id
