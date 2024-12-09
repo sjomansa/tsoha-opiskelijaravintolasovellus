@@ -63,33 +63,11 @@ def logout():
     return redirect("/")
 
 
-    # sql = text("SELECT password, admin, id FROM users WHERE username=:username")
-    # result = db.session.execute(sql, {"username": username})
-    # user = result.fetchone()
-
-    # if user:
-    #     hash_value = user.password
-    #     if check_password_hash(hash_value, password):
-    #         session["user"] = username
-    #         session["user_id"] = user.id
-    #         session["admin"] = user.admin
-    #         session["csrf_token"] = secrets.token_hex(16)
-    #         return redirect("/restaurants")
-        
-    # return redirect("/register")
-
 
 #Main restaurant view of opiskelijaravintolat, where you can see the list of all restaurants
 @app.route("/restaurants", methods=["GET", "POST"] )
 def restaurants_view():
 
-    # sql = text("""SELECT R.name AS name, U.username AS owner, COALESCE(ROUND(AVG(r_stars.rating), 1), 0) AS stars, COALESCE(ROUND(AVG(r_quetimes.que_time), 0),1) AS wait_time,
-    # R.city AS city FROM users U JOIN restaurants R ON U.id = R.owner_id LEFT JOIN r_stars ON r_stars.r_id = R.id LEFT JOIN r_quetimes ON r_quetimes.r_id = R.id
-    # GROUP BY R.name, U.username, R.city;""")
-
-    # result = db.session.execute(sql)
-
-    # restaurants_data = result.fetchall()
     if request.method == "GET":
 
         restaurants_data = get_main_restaurantdata()
@@ -333,31 +311,3 @@ def create_restaurant(user):
         except Exception as e:
             return render_template("error.html", message=e)
 
-
-
-# @app.route("/register_user", methods=["POST"])
-# def register_user():
-#     password = request.form["password1"]
-#     username = request.form["username"]
-
-#     #Look up if its a student or a restaurant
-#     status = request.form["admin"]
-
-#     admin = False
-#     if status == "ravintoloitsija":
-#         admin = True
-
-#     #Look up if the user is already in the database
-#     sql = text("SELECT id FROM users WHERE username=:username")
-#     result = db.session.execute(sql, {"username": username})
-#     user = result.fetchone()
-#     if password == request.form["password2"] and len(password) > 0:
-#         if not user:
-#             sql = text("INSERT INTO users (username, password, admin) VALUES (:username, :password, :admin)")
-#             hash_value = generate_password_hash(password)
-#             db.session.execute(sql, {"username":username, "password":hash_value, "admin":admin})
-#             db.session.commit()
-#             print(f"Sucess for {username} with password {hash_value}, status {admin}")
-#             return redirect("/")
-      
-#     return redirect("/register")

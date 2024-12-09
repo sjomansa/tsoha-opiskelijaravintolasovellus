@@ -36,13 +36,13 @@ def logout_user(session):
 def register_user(username, password1, password2, admin):
 
     if password1 != password2:
-        raise ValueError("Entered passwords don't match")
+        raise ValueError("Salasanat eivät täsmää, oletko varma, että ne ovat oikein?")
     
     if not len(password1) > 4:
-        raise ValueError("Password needs to be at least 5 characters")
+        raise ValueError("Salasanan pitää olla vähintään 5 merkkiä pitkä. Syötä uusi salasana")
     
     if not username:
-        raise ValueError("Username needs to be at least one character long")
+        raise ValueError("Käyttäjätunnuksen pitää olla ainakin yksi merkki")
 
     #Look up if the user is already in the database
     sql = text("SELECT id FROM users WHERE username=:username")
@@ -50,7 +50,7 @@ def register_user(username, password1, password2, admin):
     user = result.fetchone()
 
     if user:
-        raise ValueError("Username already in use, please select another one")
+        raise ValueError("Käyttäjätunnus jo käytössä, valitse joku toinen")
 
     try:
         sql = text("INSERT INTO users (username, password, admin) VALUES (:username, :password, :admin)")
