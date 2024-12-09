@@ -196,11 +196,15 @@ def admin_restaurant_view(user, restaurant_name):
         name = request.form["restaurant_name"]
         address = request.form["address"]
         city = request.form["city"]
+        token = request.form["csrf_token"]
 
         infotext = request.form["infotext"]
         open_times = request.form["open_times"]
 
         id = int(restaurant.id)
+
+        if token != session["csrf_token"]:
+            return render_template("error.html", message="Virhe tietojen muokkaamisessa, sinun CSRF-token ei ole sama kuin käyttäjällä!")
 
         try:
             update_restaurant_info(id, name, address, city, infotext, open_times)
@@ -260,15 +264,13 @@ def delete_restaurant(user, restaurant_name):
         return render_template("delete_restaurant.html", restaurant=restaurant)
         
     else:
-        print("Here")
+
         should_delete = request.form.getlist("delete")
-
-        print("Should?")
+        token = request.form["csrf_token"]
         
-
         if should_delete:
             try:
-                delete_restaurant_from_db(restaurant.id)
+                delete_restaurant_from_db(restaurant.id, token, session)
                 return redirect(f"/{session['user']}/restaurants")
             except Exception as e:
                 return render_template("error.html", message=e)

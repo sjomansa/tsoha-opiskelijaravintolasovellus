@@ -214,8 +214,9 @@ def insert_quetime(id, quetime):
     except:
         raise ValueError("Error inserting quetime to server")
 
-def delete_restaurant_from_db(r_id):
-
+def delete_restaurant_from_db(r_id, token, session):
+    if token != session["csrf_token"]:
+        raise ValueError("Error deleting restaurant: Your CSRF-token does not match owners!")
     try:
         sql = text("DELETE FROM restaurants WHERE id =:r_id")
         db.session.execute(sql, {"r_id":r_id})

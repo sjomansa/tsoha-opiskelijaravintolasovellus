@@ -35,6 +35,7 @@
         <label for="delete">Haluan poistaa ravintolan {{ restaurant.name }}:</label>
         <input type="checkbox" name="delete" value="delete_1">
         <input type="submit" value="Poista ravintola">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </form>
     
     <a id="goback" href ="/{{ session['user'] }}/restaurants/{{ restaurant.name }}">Palaa takaisin</a>
