@@ -87,14 +87,17 @@ def get_singular_restaurantdata(name: str):
     return restaurant, info, menu, messages
 
 
-def create_new_restaurant(owner_id, name, address, city):
+def create_new_restaurant(owner_id, name, address, city, token, session):
 
     #Check if username is taken
     if get_singular_restaurantdata(name) == None:
 
+        if session["csrf_token"] != token:
+            raise ValueError("Error creating restaurant, you csrf-token does not match the users")
+
         sql = text("""
-               INSERT INTO restaurants (owner_id, name, address, city) VALUES (:owner_id, :name, :address, :city)
-               """)
+            INSERT INTO restaurants (owner_id, name, address, city) VALUES (:owner_id, :name, :address, :city)
+            """)
         try:
             db.session.execute(sql, {"owner_id":owner_id, "name":name, "address":address, "city":city})
             db.session.commit()

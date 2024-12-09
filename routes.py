@@ -316,6 +316,7 @@ def create_restaurant(user):
         return render_template("create_restaurant_view.html", user=user)
     else:
         try:
+            token = session["csrf_token"]
             user_id = session["user_id"]
             name = request.form["name"]
             address = request.form["address"]
@@ -325,7 +326,7 @@ def create_restaurant(user):
             if not name or not address or not city:
                 return redirect("/{session.user}/restaurants")
 
-            create_new_restaurant(user_id, name, address, city)
+            create_new_restaurant(user_id, name, address, city, token, session)
             return redirect(f"/{session['user']}/restaurants")
         except Exception as e:
             return render_template("error.html", message=e)
