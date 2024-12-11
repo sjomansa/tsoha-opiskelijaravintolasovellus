@@ -22,10 +22,10 @@ def login_user(username, password, session):
             
             return True
         else:
-            raise ValueError("Incorrect password")
+            raise ValueError("Väärä salasana, yritä uudelleen")
         
     else:
-        raise ValueError("Username not found, are you already registered?")
+        raise ValueError("Käyttäjänimeä ei löytynyt, kirjoititko sen oikein?")
     
 def logout_user(session):
     del session["user"]

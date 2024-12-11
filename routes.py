@@ -52,8 +52,8 @@ def login():
         
         return redirect("/restaurants")
     
-    except:
-        return render_template("error.html", message="Kirjautuminen epäonnistui") #Add more detailed error message here
+    except Exception as e:
+        return render_template("error.html", message=e) #Add more detailed error message here
     
 
 @app.route("/logout")
