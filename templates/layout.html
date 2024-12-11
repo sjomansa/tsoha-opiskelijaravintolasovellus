@@ -54,6 +54,9 @@
 </head>
 
 <body>
+    
+    {% if session.user %}
+
     <h1>Opiskelijaravintolat</h1>
     <nav class="navbar">
         <ul>
@@ -74,5 +77,13 @@
         
         {% endblock %}
     </main>
+
+    {% else %}
+
+    <h1>Opiskelijaravintolat</h1>
+    <p>Pääsy estetty. Kirjaudu sisään päästäksesi tälle sivulle.</p>
+    <a href="/">Kirjautumiseen</a>
+    
+    {% endif %}
 
 </body>
