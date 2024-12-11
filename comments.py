@@ -18,7 +18,10 @@ def get_messages(restaurant_id):
 def insert_comment(user_id, restaurant_id, restaurant_name, message, token, session):
 
     if len(message) > 500:
-        raise ValueError("Input exceeded the maximum limit of 500 characters.")
+        raise ValueError("Viestin enimmäispituus on 500 merkkiä. Syötä lyhyempi viesti.")
+    
+    if message == "":
+        raise ValueError("Viestissä pitää lukea jotain. Syötä vähintään yksi kirjain.")
 
     #Check that the session token matches users:
     if session["csrf_token"] != token:

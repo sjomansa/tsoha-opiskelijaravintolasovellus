@@ -89,11 +89,22 @@ def get_singular_restaurantdata(name: str):
 
 def create_new_restaurant(owner_id, name, address, city, token, session):
 
+    if name == "":
+        raise ValueError("Syötä kelvollinen nimi, nimen pitää olla ainakin yhden merkin pituinen")
+    
+    if address == "":
+        raise ValueError("Syötä kelvollinen osoite, osoitteen pitää olla ainakin yhden merkin pituinen")
+    
+    if city == "":
+        raise ValueError("Syötä kelvollinen kaupunki, kaupungin nimen pitää olla ainakin yhden merkin pituinen")
+
+
     #Check if username is taken
     if get_singular_restaurantdata(name) == None:
 
         if session["csrf_token"] != token:
             raise ValueError("Error creating restaurant, you csrf-token does not match the users")
+        
 
         sql = text("""
             INSERT INTO restaurants (owner_id, name, address, city) VALUES (:owner_id, :name, :address, :city)
