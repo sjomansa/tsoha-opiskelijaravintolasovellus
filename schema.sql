@@ -25,11 +25,7 @@ CREATE TABLE r_quetimes (
     que_time INTEGER
 );
 
-CREATE TABLE r_specialities (
-    id SERIAL PRIMARY KEY, 
-    r_id INTEGER REFERENCES restaurants(id) ON DELETE CASCADE, 
-    speciality TEXT
-);
+
 
 CREATE TABLE r_menus (
     id SERIAL PRIMARY KEY, 
@@ -45,11 +41,7 @@ CREATE TABLE r_info (
     open_times TEXT
 );
 
-CREATE TABLE likes_specialities (
-    id SERIAL PRIMARY KEY, 
-    liker_id INTEGER REFERENCES users(id) ON DELETE CASCADE, 
-    speciality_id INTEGER REFERENCES r_specialities(id) ON DELETE CASCADE
-);
+
 
 CREATE TABLE messages (
     id SERIAL PRIMARY KEY, 
