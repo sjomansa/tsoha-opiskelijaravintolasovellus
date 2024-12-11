@@ -192,6 +192,7 @@ def admin_restaurant_view(user, restaurant_name):
         except Exception as e:
             return render_template("error.html", message=e)
 
+        #Get the current menu items and update them if needed
 
         for key, value in request.form.items():
             if key.startswith("name_"):
@@ -216,14 +217,17 @@ def admin_restaurant_view(user, restaurant_name):
         newfood_price = request.form["menuitem_price"]
 
         if len(newfood) > 0 and len(newfood_price) > 0:
-            newfood_price = float(newfood_price)
+            try:
+                newfood_price = float(newfood_price)
+            except:
+                return render_template("error.html", message="Syötä kelvollinen hinta tuotteelle.")
             if newfood_price > 0:
                 try:
                     insert_menuitem(restaurant.id, newfood, newfood_price)
                 except Exception as e:
                         return render_template("error.html", message=e)
             
-        return redirect(f"/{session['user']}/restaurants/{restaurant.name}")
+        return redirect(f"/{session['user']}/restaurants/{name}")
 
             
 

@@ -132,22 +132,40 @@ def update_restaurant_info(r_id, name, address, city, info, open_times):
     sql = text('''
         UPDATE restaurants
         SET name =:name, address =:address, city =:city
-        WHERE name =:name
+        WHERE id =:r_id
     '''
     )
 
+    #Check that the input is not empty
+
+    if name == "":
+        raise ValueError("Ravintolalla pitää olla nimi, syötä vähintään yksi kirjain")
+    
+    if address == "":
+        raise ValueError("Ravintolalla pitää olla kelvollinen osoite. Se ei voi olla tyhjä.")
+    
+    if city == "":
+        raise ValueError("Ravintolalla pitää olla kelvollinen kaupunki. Se ei voi olla tyhjä.")
+    
+    if info == "":
+        raise ValueError("Infoteksti-kenttä ei voi olla tyhjä.")
+    
+    if open_times == "":
+        raise ValueError("Aukioloaika-kenttä ei voi olla tyhjä.")
+
     try:
-        db.session.execute(sql, {"name":name, "address":address, "city":city})
+        db.session.execute(sql, {"name":name, "address":address, "city":city, "r_id":r_id})
         db.session.commit()
     except Exception as e:
         raise ValueError("Error updating the restaurants name and address information :/")
+    
+    #Check if there is a current infotext of the restaurant. If not, create one.
     
     sql = text("SELECT infotext FROM r_info WHERE r_id =:r_id")
 
     result = db.session.execute(sql, {"r_id":r_id})
     current_info = result.fetchone()
 
-    #Check that there is a current infotext of the restaurant. If not, create one.
     if not current_info:
         sql = text('''
                    INSERT INTO r_info (r_id, infotext, open_times)
@@ -159,6 +177,7 @@ def update_restaurant_info(r_id, name, address, city, info, open_times):
         except:
             raise ValueError("Error creating an infotext to the restaurant")
 
+    #If info exists, we only need to update the database
     else:
         sql = text('''
             UPDATE r_info
