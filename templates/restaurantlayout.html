@@ -6,16 +6,32 @@
 
     <style>
 
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: auto;
+            grid-template-areas: 
+            "topleft topright ."
+            "footer footer ."
+            ;
+        }
+
+        .info {
+            grid-area: topright;
+        }
+
+        .menu {
+            grid-area: topleft;
+        }
+
+        .comment_functionality_view {
+            grid-area: footer;
+        }
+
         td {
             padding-right: 15px;
             text-align: left;
         }
-
-        .info_menu_grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr
-        }
-
 
         .message_instance {
             width: 500px;
@@ -26,7 +42,9 @@
         }
 
         #message_box {
-            width: 500px;
+            width: 400px;
+            height: 50px;
+            border-radius: 12px;
         }
 
         .comment_field {
@@ -44,17 +62,6 @@
             border-style: none;
         }
 
-        #message_box_label {
-            display: flex;
-            width: 150;
-            height: 50;
-            background-color: rgb(67, 140, 140);
-            border-radius: 4px;
-            color: white;
-            align-items: center;
-            padding: 15px;
-            box-sizing: border-box;
-        }
         .restaurantproperties {
             display: flex;
             flex-direction: row;
@@ -93,68 +100,68 @@
 <h1>{{ restaurant.name }}</h1>
     <br>
     <div class="restaurantproperties">
-    <table>
-        <td><h3>{{ restaurant.rating }}</h3></td>
-        <td><h3>{{ restaurant.wait_time }} min</h3></td>
-        <td><h3>{{ restaurant.owner }}</h3></td>
-        <td><h3>{{ restaurant.address }}</h3></td>
-    </table>
-    <div class="add_rating_waittime">
-        <a href="/restaurants/{{ restaurant.name }}/rate_restaurant">Lisää arvostelu</a>
-        <form id="add_quetime_form" action ="/restaurants/{{ restaurant.name }}" method="POST">
-            <label for="quetime">Lisää odotusaika</label>
-            <input type="number" step="1" max="60" min="1" name="quetime" size="30">
-            <input id="submit_button" type="submit" value="Lisää">
-        </form>
-    </div>
+        <table>
+            <td><h3>{{ restaurant.rating }}</h3></td>
+            <td><h3>{{ restaurant.wait_time }} min</h3></td>
+            <td><h3>{{ restaurant.owner }}</h3></td>
+            <td><h3>{{ restaurant.address }}</h3></td>
+        </table>
+        <div class="add_rating_waittime">
+            <a href="/restaurants/{{ restaurant.name }}/rate_restaurant">Lisää arvostelu</a>
+            <form id="add_quetime_form" action ="/restaurants/{{ restaurant.name }}" method="POST">
+                <label for="quetime">Lisää odotusaika</label>
+                <input type="number" step="1" max="60" min="1" name="quetime" size="30">
+                <input id="submit_button" type="submit" value="Lisää">
+            </form>
+        </div>
     </div>
 
     <hr>
-    <br>
 
-    <div class="info_menu_grid">
-        <div class="info">
+<div class="container">
+
+    <div class="info">
             <h2>Info:</h2>
-                <div class="infotext">
-                    <p>{{ info.infotext }}</p>
-                </div>
-                <div class="open_times">
-                    <p>Aukioloajat: {{ info.open_times }}</p>
-                </div>
-        </div>
-
-    <br>
-        <div class="menu">
-            <h2>Ruokalista</h2>
-                <ul>
-
-                    {% for fooditem in menu %}
-                        <div class="menuitem">
-                            <li>{{ fooditem.food }}</li>          
-                        </div>
-                            
-                        <div class="menuitem">
-                            <li>{{ fooditem.price }}€</li>
-                        </div>
-                        <br>
-                    {% endfor %}
-                </ul>
-        </div>
+            <div class="infotext">
+                <p>{{ info.infotext }}</p>
+            </div>
+            <div class="open_times">
+                <p>Aukioloajat: {{ info.open_times }}</p>
+            </div>
     </div>
 
-    <br> <br>
+    <div class="menu">
+        <h2>Ruokalista</h2>
+            <ul>
+
+                {% for fooditem in menu %}
+                    <div class="menuitem">
+                        <li>{{ fooditem.food }}</li>          
+                    </div>
+                        
+                    <div class="menuitem">
+                        <li>{{ fooditem.price }}€</li>
+                    </div>
+                    <br>
+                {% endfor %}
+            </ul>
+    </div>
+
+    <br> <br> <br>
+    
 
     <div class="comment_functionality_view">
 
+        <h3>Ravintolan kommentit</h3>
+
         <form class="comment_field" action ="/send_message" method="POST"> 
-            <label id="message_box_label" for="message_box">Uusi kommentti</label><br>
             <textarea id="message_box" name="content" rows="4" cols="40" required></textarea>
 
             <input type="hidden" name="restaurant_id" value={{ restaurant.id }}>
             <input type="hidden" name="restaurant_name" value={{ restaurant.name }}>
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 
-            <button id="comment_send_button" type="submit">Lähetä</button>
+            <button id="comment_send_button" type="submit">Lisää uusi kommentti</button>
         </form>
 
         <div class="messages">
@@ -173,5 +180,7 @@
 
         </div>
     </div>
+
+</div>
 
 {% endblock %}
