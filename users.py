@@ -3,9 +3,10 @@ from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
 import secrets
 
+#Methods for handling and updating user-specific information.
 
 
-
+#Checks the password and username. Assigns the session data if login is succesful.
 def login_user(username, password, session):
     
     sql = text("SELECT password, admin, id FROM users WHERE username=:username")
@@ -26,13 +27,15 @@ def login_user(username, password, session):
         
     else:
         raise ValueError("Käyttäjänimeä ei löytynyt, kirjoititko sen oikein?")
-    
+
+#For logging out. Deletes the session data.  
 def logout_user(session):
     del session["user"]
     del session["user_id"]
     del session["admin"]
     del session["csrf_token"]
 
+#For registering a new user. Checks if the passwords match and inserts the information into the database if succesful.
 def register_user(username, password1, password2, admin):
 
     if password1 != password2:

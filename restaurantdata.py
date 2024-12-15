@@ -5,7 +5,7 @@ from comments import get_messages
 import secrets
 
 
-
+#Get the data for the main view of all restaurants. Includes sorting-order functionality.
 def get_main_restaurantdata(name=None, sort=None, sortorder=None):
 
     if name:
@@ -54,7 +54,7 @@ def get_main_restaurantdata(name=None, sort=None, sortorder=None):
 
     return restaurants_data
 
-
+#Get data for a single restaurant from the database.
 def get_singular_restaurantdata(name: str):
 
     sql = text("""
@@ -86,7 +86,7 @@ def get_singular_restaurantdata(name: str):
 
     return restaurant, info, menu, messages
 
-
+#Insert a new restaurant into the database.
 def create_new_restaurant(owner_id, name, address, city, token, session):
 
     if name == "":
@@ -122,7 +122,7 @@ def create_new_restaurant(owner_id, name, address, city, token, session):
     
 
     
-
+#Update the menu in the database according to the menuitems id. 
 def update_menu(item_id, food, price):
 
     sql = text('''
@@ -138,6 +138,7 @@ def update_menu(item_id, food, price):
     except Exception as e:
         raise ValueError("Error updating the menu :/")
 
+#Update the information for a specific restaurant.
 def update_restaurant_info(r_id, name, address, city, info, open_times):
 
     sql = text('''
@@ -202,7 +203,8 @@ def update_restaurant_info(r_id, name, address, city, info, open_times):
             db.session.commit()
         except:
             raise ValueError("Error updating the information-text and opening-times")
-    
+
+#Insert a new menuitem to the database.   
 def insert_menuitem(r_id, food, price):
 
     r_id = int(r_id)
@@ -215,7 +217,8 @@ def insert_menuitem(r_id, food, price):
         db.session.commit()
     except:
         raise ValueError("Error inserting a new menuitem")
-    
+
+#Delete an item from the database. 
 def delete_menuitem(id):
 
     sql = text("DELETE FROM r_menus WHERE id =:id")
@@ -226,7 +229,7 @@ def delete_menuitem(id):
     except:
         raise ValueError("Could not delete item")
     
-
+#Insert a rating to the database according to the restaurants id.
 def insert_rating(id, rating):
 
     try:
@@ -235,7 +238,8 @@ def insert_rating(id, rating):
         db.session.commit()
     except Exception as e:
         raise ValueError(e)
-    
+
+#Insert a quetime to the database according to the restaurants id.
 def insert_quetime(id, quetime):
 
     try:
@@ -244,6 +248,8 @@ def insert_quetime(id, quetime):
         db.session.commit()
     except:
         raise ValueError("Error inserting quetime to server")
+
+#Delete a restaurant from the database.
 
 def delete_restaurant_from_db(r_id, token, session):
     if token != session["csrf_token"]:

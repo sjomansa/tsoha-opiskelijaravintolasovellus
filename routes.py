@@ -5,6 +5,7 @@ from users import login_user, logout_user, register_user
 from restaurantdata import get_main_restaurantdata, get_singular_restaurantdata, create_new_restaurant, update_menu, update_restaurant_info, insert_menuitem, delete_menuitem, insert_rating, insert_quetime, delete_restaurant_from_db
 from comments import insert_comment
 
+#The index view. Returns the main restaurant view or the login view depending on the users sign-in status.
 @app.route("/")
 def index():
     if session.get("user"):
@@ -55,7 +56,7 @@ def login():
     except Exception as e:
         return render_template("error.html", message=e) #Add more detailed error message here
     
-
+#Log the user out and delete its sessiondata.
 @app.route("/logout")
 def logout():
 
@@ -85,7 +86,7 @@ def restaurants_view():
 
     return render_template("restaurants.html", restaurants=restaurants_data)
 
-
+#The route for a specific restaurant. Get method returns the view and post method inserts a new quetime of this restaurant into the database.
 @app.route("/restaurants/<name>", methods=["GET", "POST"])
 def restaurant_info(name):
 
@@ -110,7 +111,7 @@ def restaurant_info(name):
             return render_template("error.html", message="Ongelma odotusajan lisäämisessä palvelimelle")
 
 
-
+#Route for rating the restaurant.
 @app.route("/restaurants/<name>/rate_restaurant", methods = ["GET", "POST"])
 def rate_restaurant(name):
     if request.method == "GET":
@@ -131,7 +132,7 @@ def rate_restaurant(name):
         except Exception as e:
             return render_template("error.html", message="Ongelma arvion lisäämisessä palvelimelle")
 
-
+#The main admin view of the restaurant-owners restaurants.
 @app.route("/<user>/restaurants")
 def admin_restaurants_view(user):
 
@@ -144,7 +145,8 @@ def admin_restaurants_view(user):
     else:
 
         return render_template("error.html", message="Sinulla ei ole oikeuksia päästä tälle sivulle :(")
-    
+
+#Admin view of a specific restaurant. Accessable by the owner. Post method is for updating the restaurants information.
 @app.route("/<user>/restaurants/<restaurant_name>", methods = ["GET", "POST"])
 def admin_restaurant_view(user, restaurant_name):
 
@@ -230,7 +232,7 @@ def admin_restaurant_view(user, restaurant_name):
         return redirect(f"/{session['user']}/restaurants/{name}")
 
             
-
+#The route for deleting a restaurant.
 @app.route("/<user>/restaurants/<restaurant_name>/delete_restaurant", methods = ["GET", "POST"])
 def delete_restaurant(user, restaurant_name):
 
@@ -277,25 +279,15 @@ def send_message():
     message = request.form["content"]
     crsf_token = request.form["csrf_token"]
 
-    # #Check if message is too long
-    # if len(message) > 500:
-    #     return redirect("/restaurants/{restaurant_name}") #Add error message here
-
     try:
         insert_comment(user_id, restaurant_id, restaurant_name, message, crsf_token, session)
     except Exception as e:
         return render_template("error.html", message = e)
     
-    # #Check that the session token matches users:
-    # if session["csrf_token"] != request.form["csrf_token"]:
-    #     return redirect("/") #Add error message here
-    
-    # sql = text("INSERT INTO messages (r_id, u_id, message, time) VALUES (:r_id, :u_id, :message, NOW())")
-    # db.session.execute(sql, {"r_id":restaurant_id, "u_id":user_id, "message":message})
-    # db.session.commit()
 
     return redirect(f"/restaurants/{restaurant_name}")
 
+#The route for creating a new restaurant.
 @app.route("/<user>/restaurants/new_restaurant", methods = ["GET", "POST"])
 def create_restaurant(user):
 
