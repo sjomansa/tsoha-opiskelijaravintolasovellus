@@ -7,6 +7,13 @@
     </title>
 
     <style>
+
+    h1 {
+        display: block;
+        padding: 10px;
+        background-color: hsl(145, 33%, 46%);
+        color: white;
+      }
       
       .signup.form-container {
         max-width: 400px;
@@ -33,10 +40,31 @@
         width: auto;
       }
 
+      #register_button {
+        background-color: hsl(145, 33%, 46%);
+        color: white;
+        height: 30px;
+        width: 150px;
+        margin-right: 20px;
+        border-radius: 5px;
+        border-style: none;
+
+      }
+
+
     </style>
 </head>
 
 <body>
+
+  <h1>Opiskelijaravintolat</h1>
+
+  <p>Rekisteröi uusi käyttäjä. Ravintoloitsijana voit lisätä uusia ravintoloita ja muokata omien ravintoloidesi tietoja. </p>
+
+  <hr>
+
+
+
     <form action="/register" method="post">
     <p> Tee uusi käyttäjä</p> <br>
     
@@ -58,9 +86,11 @@
             <input type="radio" name="admin" value="ravintoloitsija"> Ravintoloitsija
         </div>
         <div class="form-group">
-        <input type="submit" value="register">
+        <input id="register_button" type="submit" value="Rekisteröi käyttäjä">
+        <a href="/">Takaisin kirjautumissivustolle</a>
     </div>
     </form>
 
-    <a href="/">Kirjautumissivustolle</a>
+
+
 </body>
