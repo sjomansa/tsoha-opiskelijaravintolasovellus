@@ -1,23 +1,18 @@
 Application shows the student-restaurants for in a list view. Each restaurant has a grade from (1-5), average que time and a restaurant owner. 
 
-In each restaurant page, student users are able to chat about the restaurant in the comment section, see its menu for the day, rate and add que times for the restaurant, see information (opening times, adress) and add information about any specialities about the restaurant (Special made chili sauce, Special coffee availabe, funny staff member...)
+In each restaurant page, users are able to chat about the restaurant in the comment section, see its menu for the day, rate and add que times for the restaurant and see information about the restaurant (opening times, adress and any other things put up by the restaurant owner).
 
-
-  -Users can sort by owner, rating and que time on the restaurant list view. 🟩
+  -Users can sort the order by owner, rating and que time on the restaurant list view. 
   
-  -A user can sign in / register as a restaurant or a student. They can also sign out. 🟩
+  -A user can sign in / register as a restaurant or a student. They can also sign out. Restaurant-users are able to add new restaurants.
 
-  -User can rate a restaurant and add a que time. Detail view will show the average of this rating / que time. 🟩
+  -User can rate a restaurant and add a que time. Other people are able to see the averages of this restaurant-specific information.
 
-  -User can write a comment about a restaurant in the comment section. They are able to see other comments about the restaurant. 🟩
+  -User can write a comment about a restaurant in the comment section. They are able to see other comments about the restaurant. 
 
-  -Restaurant owners can acess a special view where they can see all their restaurants. 🟩
+  -Restaurant owners can acess a special view where they can see all their restaurants in a single list.
 
-  -Restaurant owner can add new restaurants. They can edit their own restaurants information (menu, opening time, location, city). They can also delete their own restaurants. 🟩
-
-  -Looks need to be improved 🟨
-
-  -Checks for session user access. 🟩
+  -Restaurant owner can add new restaurants. They can edit their own restaurants information (menu, opening time, location, city). They can also delete their own restaurants. 
 
 
 
